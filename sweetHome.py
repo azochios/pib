@@ -1,15 +1,21 @@
+class Room:
+	def __init__(self, name = None):
+		self.name = name
+		self.walls = []
+
 class Wall:
-	def __init__(self, shape):
+	def __init__(self, shape, color = None):
 		self.shape = shape
 		self.windows = []
 		self.doors = []
 		self.outlets = []
+		self.color = color
 
 	def netArea(self):
-		total = 0
+		uncovered = 0
 		for i in [*self.doors, *self.windows, *self.outlets]:
-			total += i.area
-		return self.shape.area - total
+			uncovered += i.area
+		return self.shape.area - uncovered
 
 class Door:
 	def __init__(self, shape):

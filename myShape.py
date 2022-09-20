@@ -20,5 +20,7 @@ class Triangle(Shape):
 		# self.side_a = a
 		# self.side_b = b
 		# self.side_c = c
+		
+		# Heron's formula for a triangle's area
 		self.s = (a + b + c ) / 2
 		self.area = sqrt(s * (s - a) * (s - b) * (s - c))
