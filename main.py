@@ -13,45 +13,61 @@ def askDim(question):
 	h = float(input("Enter height: "))
 	return w, h
 
-def askInfo(rooms):
-	for r, v in rooms.items():
-		m = int(input(f"How many walls in the {r}?\n"))
-		for i in range(m):
-			# Account for offset by 1
-			question = f"Wall {i + 1}"
-			c = input("Pick a color\n")
-			w, h = askDim(question)
-			v.walls.append(sweetHome.Wall(myShape.Rectangle(w, h), c))
+def askWall(rooms, name):
+	r = name
+	v = rooms[name]
+	m = int(input(f"How many walls in the {r}?\n"))
 
-			n = int(input("How many doors? "))
-			for j in range(n):
-				question = f"Wall {i + 1}, Door {j + 1} in {r}" 
-				w, h = askDim(question)
-				v.walls[i].doors.append(myShape.Rectangle(w, h))
+	for i in range(m):
+		# Account for offset by 1
+		question = f"Wall #{i + 1} in the {r}:"
+		c = input(f"Pick a color for {question}\n")
+		w, h = askDim(question)
+		v.walls.append(sweetHome.Wall(myShape.Rectangle(w, h), c))
 
-			n = int(input("How many windows? "))
-			for j in range(n):
-				question = f"Wall {i + 1}, Window {j + 1} in {r}" 
-				w, h = askDim(question)
-				v.walls[i].windows.append(myShape.Rectangle(w, h))
+		n = int(input("How many doors? "))
+		askTare(i, n, v.walls[i].doors, r, "door")
 
+		n = int(input("How many windows? "))
+		askTare(i, n, v.walls[i].windows, r, "window")
 
-rooms = {}
-print("Welcome to Paint it Black! So you want to paint your house?\n\
+def askTare(i, n, v, r, tare):
+	for j in range(n):
+		question = f"Wall {i + 1}, {tare} {j + 1} in {r}" 
+		w, h = askDim(question)
+		v.append(myShape.Rectangle(w, h))
+
+def intro():
+	print("Welcome to Paint it Black! So you want to paint your house?\n\
 Let's start with a room! Pick a name:")
-name = input()
-rooms[name] = sweetHome.Room(name)
+	while True:
+		name = input()
+		rooms[name] = sweetHome.Room(name)
+		askWall(rooms, name)
+
+		choice = input("How about another room? (y/n) ").lower()
+		match choice:
+			case 'y':
+				print("Pick a name:")
+			case 'n':
+				break
+			case _:
+				print("Please try again...")
+				break
+
+def printSummary(rooms):
+	for r, v in rooms.items():
+		print(f"The {r} has {len(v.walls)} wall(s)")
+		for w in v.walls:
+			area  = w.netArea() / (CM_TO_FT ** 2)
+			paint = area / SQ_FT_COVERAGE
+			txt =  f"The Wall will need {paint:.2f} gallons of " 
+			txt += f"'{w.color}' paint!"
+			print(txt)
 
 
 
-
-askInfo(rooms)
-
-for r, v in rooms.items():
-	print(f"The {r} has {len(v.walls)} walls")
-	for w in v.walls:
-		area  = w.netArea() / (CM_TO_FT ** 2)
-		paint = area / SQ_FT_COVERAGE
-		txt =  f"The Wall will need {paint:.2f} gallons of " 
-		txt += f" '{w.color}' paint!"
-		print(txt)
+if __name__ == "__main__":
+	rooms = {}
+	intro()
+	printSummary(rooms)
