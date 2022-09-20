@@ -1,6 +1,6 @@
-# Paint it Black, a paint calculator!
+# Paint it Black, a paint cost calculator!
 
-import myShape, sweetHome
+import myShape, sweetHome, myColors
 
 
 SQ_FT_COVERAGE = 350
@@ -21,23 +21,25 @@ def askWall(rooms, name):
 	for i in range(m):
 		# Account for offset by 1
 		question = f"Wall #{i + 1} in the {r}:"
-		c = input(f"Pick a color for {question}\n")
+		c = myColors.pickColor(question)
 		w, h = askDim(question)
 		v.walls.append(sweetHome.Wall(myShape.Rectangle(w, h), c))
 
-		n = int(input("How many doors? "))
-		askTare(i, n, v.walls[i].doors, r, "door")
+		tare = "door"
+		askTare(i, v.walls[i].doors, r, tare)
 
-		n = int(input("How many windows? "))
-		askTare(i, n, v.walls[i].windows, r, "window")
+		tare = "window"
+		askTare(i, v.walls[i].windows, r, tare)
 
-def askTare(i, n, v, r, tare):
+def askTare(i, v, r, tare):
+	n = int(input(f"How many {tare}s? "))
 	for j in range(n):
-		question = f"Wall {i + 1}, {tare} {j + 1} in {r}" 
+		question = f"Wall #{i + 1}, {tare} #{j + 1} in {r}" 
 		w, h = askDim(question)
 		v.append(myShape.Rectangle(w, h))
 
 def intro():
+	rooms = {}
 	print("Welcome to Paint it Black! So you want to paint your house?\n\
 Let's start with a room! Pick a name:")
 	while True:
@@ -53,21 +55,21 @@ Let's start with a room! Pick a name:")
 				break
 			case _:
 				print("Please try again...")
-				break
-
+				# break
+	return rooms
 def printSummary(rooms):
 	for r, v in rooms.items():
 		print(f"The {r} has {len(v.walls)} wall(s)")
 		for w in v.walls:
+			i = v.walls.index(w)
 			area  = w.netArea() / (CM_TO_FT ** 2)
 			paint = area / SQ_FT_COVERAGE
-			txt =  f"The Wall will need {paint:.2f} gallons of " 
+			txt =  f"Wall #{i + 1} will need {paint:.2f} gallons of " 
 			txt += f"'{w.color}' paint!"
 			print(txt)
 
 
 
 if __name__ == "__main__":
-	rooms = {}
-	intro()
+	rooms = intro()
 	printSummary(rooms)
