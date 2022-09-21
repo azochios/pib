@@ -2,8 +2,7 @@
 *A paint cost calculator*
 
 ## TODO
-- Encapsulate the prompts in a Class
 - Support more window and door shapes (circular, triangle...)
-- Read paint static info (price, containers) from file
+- Read paint static info (i.e. price, containers) from file
 - Paint the ceiling!
 - Tabulate the summary
