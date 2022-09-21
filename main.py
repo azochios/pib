@@ -1,16 +1,11 @@
 # Paint it Black, a paint cost calculator!
 
-import myShape, sweetHome, myColors
-
-
-SQ_FT_COVERAGE = 350
-CM_TO_FT       = 30.48
-CM_TO_M        = 100
+import myShape, sweetHome, myColors, myCalc
 
 def askDim(question):
 	print(question)
-	w = float(input("Enter width: "))
-	h = float(input("Enter height: "))
+	w = float(input("Enter width : (ft.) "))
+	h = float(input("Enter height: (ft.) "))
 	return w, h
 
 def askWall(rooms, name):
@@ -48,27 +43,56 @@ Let's start with a room! Pick a name:")
 		askWall(rooms, name)
 
 		choice = input("How about another room? (y/n) ").lower()
-		match choice:
+		match choice[0]:
 			case 'y':
 				print("Pick a name:")
 			case 'n':
 				break
 			case _:
-				print("Please try again...")
-				# break
+				print("Moving on...")
+				break
 	return rooms
+
 def printSummary(rooms):
+	paint = {}
 	for r, v in rooms.items():
-		print(f"The {r} has {len(v.walls)} wall(s)")
+		# print(f"The {r} has {len(v.walls)} wall(s)")
 		for w in v.walls:
-			i = v.walls.index(w)
-			area  = w.netArea() / (CM_TO_FT ** 2)
-			paint = area / SQ_FT_COVERAGE
-			txt =  f"Wall #{i + 1} will need {paint:.2f} gallons of " 
-			txt += f"'{w.color}' paint!"
-			print(txt)
+			if w.color in paint.keys():
+				paint[w.color] += w.netArea()
+			else:
+				paint[w.color] = w.netArea()
+	
+	total = 0
+	txt = "Summary"
+	print(txt)
+	print(len(txt) * '-')
+	for k, v in paint.items():
+		v = myCalc.volCalc(v)
+		v = myCalc.costCalc(v)
+		# v now holds a 2 x 4 list
 
-
+		txt = f"{k}\n"
+		iter = []
+		# Retrieve indices of non-zero elements in v
+		for j in range(len(v[0])):
+			if v[0][j] == 0:
+				continue
+			else:
+				iter.append(j)
+		# Generate subtotal summary text
+		for j in iter:
+			txt += f"\t{v[0][j]} x "
+			txt += f"{myCalc.PAINT[1][j]:4} "
+			txt += f"Subtotal: ${v[1][j]:.2f}\n"
+			total += v[1][j]
+		print(txt)
+	txt = "Total"
+	print(f"{txt:>32}")
+	txt = f"{len(txt) * '-':>32}"
+	print(txt)
+	txt = '$' + f"{total:.2f}"
+	print(f"{txt:>32}")
 
 if __name__ == "__main__":
 	rooms = intro()
