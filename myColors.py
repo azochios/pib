@@ -1,19 +1,22 @@
+ESC = '\x1b'
+RESET = ESC + '[0m'
+
 COLORS = {
-    1 : ["000000", "paint it black"],
-    2 : ["0000AA", "insidious blue"],
-    3 : ["00AA00", "fiery green"],
-    4 : ["00AAAA", "vicious cyan"],
-    5 : ["AA0000", "redemption dead red"],
-    6 : ["AA00AA", "deep purple"],
-    7 : ["AA5500", "merry yellow"],
-    8 : ["AAAAAA", "fluffy white"]
+    1 : ["[30m", "paint it black"],
+    2 : ["[34m", "insidious blue"],
+    3 : ["[32m", "fiery green"],
+    4 : ["[36m", "vicious cyan"],
+    5 : ["[31m", "redemption dead red"],
+    6 : ["[35m", "deep purple"],
+    7 : ["[33m", "clockwork orange"],
+    8 : ["[37m", "fluffy white"]
 }
 
 DEFAULT = "paint it black"
 
 def printColors():
     for k, v in COLORS.items():
-        print(f"{k}) {v[1]}")
+        print(f"{k}) {ESC}{v[0]}{v[1]}{RESET}")
 
 def pickColor(question):
     txt = f"Please choose a color (1-8) for {question}:"

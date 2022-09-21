@@ -23,7 +23,7 @@ def askWall(rooms, name):
 	while not valid:
 		try:
 			m = int(input(f"How many walls in the {r}?\n"))
-			assert m > 0 and m <= 5
+			assert m <= 5
 			valid = True
 		except (AssertionError, ValueError):
 			print("Please be serious...")
@@ -42,7 +42,14 @@ def askWall(rooms, name):
 		askTare(i, v.walls[i].windows, r, tare)
 
 def askTare(i, v, r, tare):
-	n = int(input(f"How many {tare}s? "))
+	valid = False
+	while not valid:
+		try:
+			n = int(input(f"How many {tare}s? "))
+			assert n >= 0
+			valid = True
+		except (AssertionError, ValueError):
+			print("Speak 'non-negative int' and enter")
 	for j in range(n):
 		question = f"Wall #{i + 1}, {tare} #{j + 1} in {r}" 
 		w, h = askDim(question)
