@@ -17,14 +17,14 @@ class Wall:
 			uncovered += i.area
 		return self.shape.area - uncovered
 
-class Door:
-	def __init__(self, shape):
-		self.shape = shape
+# class Door:
+# 	def __init__(self, shape):
+# 		self.shape = shape
 
-class Window:
-	def __init__(self, shape):
-		self.shape = shape
+# class Window:
+# 	def __init__(self, shape):
+# 		self.shape = shape
 
-class Outlet:
-	def __init__(self, shape):
-		self.shape = shape		
+# class Outlet:
+# 	def __init__(self, shape):
+# 		self.shape = shape		
