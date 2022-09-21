@@ -9,9 +9,10 @@ def askDim(question):
 		try:
 			w = float(input("Enter width : (ft.) "))
 			h = float(input("Enter height: (ft.) "))
+			assert w > 0 and h > 0
 			valid = True
-		except ValueError:
-			print("Behave yourself!")
+		except (AssertionError, ValueError):
+			print("Behave yourself and start over!")
 	return w, h
 
 def askWall(rooms, name):
@@ -22,8 +23,9 @@ def askWall(rooms, name):
 	while not valid:
 		try:
 			m = int(input(f"How many walls in the {r}?\n"))
+			assert m > 0 and m <= 5
 			valid = True
-		except ValueError:
+		except (AssertionError, ValueError):
 			print("Please be serious...")
 
 	for i in range(m):

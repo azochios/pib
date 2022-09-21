@@ -2,7 +2,7 @@ COLORS = {
     1 : ["000000", "paint it black"],
     2 : ["0000AA", "insidious blue"],
     3 : ["00AA00", "fiery green"],
-    4 : ["00AAAA", "viscious cyan"],
+    4 : ["00AAAA", "vicious cyan"],
     5 : ["AA0000", "redemption dead red"],
     6 : ["AA00AA", "deep purple"],
     7 : ["AA5500", "merry yellow"],
@@ -16,17 +16,19 @@ def printColors():
         print(f"{k}) {v[1]}")
 
 def pickColor(question):
-    print(f"Please choose a color (1-8) for {question}:")
+    txt = f"Please choose a color (1-8) for {question}:"
+    print(txt)
     printColors()
 
     valid = False
     while not valid:
         try:
             choice = int(input())
+            assert choice > 0 and choice <= len(COLORS)
             valid = True
-        except ValueError:
+        except (AssertionError, ValueError):
             print("Please stop harassing the calculator...")
-            print(f"Please choose a color (1-8) for {question}:")
+            print(txt)
     match choice:
         case 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8:
             c = COLORS[choice]
