@@ -78,7 +78,6 @@ Let's start with a room! Pick a name:")
 def printSummary(rooms):
 	paint = {}
 	for r, v in rooms.items():
-		# print(f"The {r} has {len(v.walls)} wall(s)")
 		for w in v.walls:
 			if w.color in paint.keys():
 				paint[w.color] += w.netArea()
@@ -90,7 +89,13 @@ def printSummary(rooms):
 	print(txt)
 	print(len(txt) * '-')
 	for k, v in paint.items():
-		v = myCalc.volCalc(v)
+		try:
+			v = myCalc.volCalc(v)
+			assert v > 0
+		except AssertionError:
+			print(f"No surface to paint in '{k}'")
+			continue
+		
 		v = myCalc.costCalc(v)
 		# v now holds a 2 x 4 list
 
