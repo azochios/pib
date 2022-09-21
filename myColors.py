@@ -18,8 +18,15 @@ def printColors():
 def pickColor(question):
     print(f"Please choose a color (1-8) for {question}:")
     printColors()
-    choice = int(input())
 
+    valid = False
+    while not valid:
+        try:
+            choice = int(input())
+            valid = True
+        except ValueError:
+            print("Please stop harassing the calculator...")
+            print(f"Please choose a color (1-8) for {question}:")
     match choice:
         case 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8:
             c = COLORS[choice]

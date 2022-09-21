@@ -4,14 +4,27 @@ import myShape, sweetHome, myColors, myCalc
 
 def askDim(question):
 	print(question)
-	w = float(input("Enter width : (ft.) "))
-	h = float(input("Enter height: (ft.) "))
+	valid = False
+	while not valid:
+		try:
+			w = float(input("Enter width : (ft.) "))
+			h = float(input("Enter height: (ft.) "))
+			valid = True
+		except ValueError:
+			print("Behave yourself!")
 	return w, h
 
 def askWall(rooms, name):
 	r = name
 	v = rooms[name]
-	m = int(input(f"How many walls in the {r}?\n"))
+
+	valid = False
+	while not valid:
+		try:
+			m = int(input(f"How many walls in the {r}?\n"))
+			valid = True
+		except ValueError:
+			print("Please be serious...")
 
 	for i in range(m):
 		# Account for offset by 1
